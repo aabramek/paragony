@@ -1,1 +1,1 @@
-# zadanie_bojowe_frameworki
+# projekt na zajęcia z frameworków webowych
