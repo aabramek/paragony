@@ -16,7 +16,7 @@ function AddOrEditReceipt() {
 	const [shopStreet, setShopStreet] = useState(state ? state.shop.street : "")
 	
 	const [datetime, setDatetime] = useState(state ? state.datetime : "")
-
+	
 	const [products, setProducts] = useState(state ? state.products : [])
 
 	const [productName, setProductName] = useState("")
@@ -82,6 +82,7 @@ function AddOrEditReceipt() {
 
 			datetime: datetime,
 			products: products.map((product) => {if (product.id) delete product.id; return product}),
+			total: products.reduce((acc, product) => acc + product.price * product.amount - product.discount, 0),
 			user_id: auth_userid
 		}
 
@@ -99,7 +100,7 @@ function AddOrEditReceipt() {
 			body: JSON.stringify(receipt)
 		}
 
-		fetch("http://127.0.0.1:8080/api/receipt", options)
+		fetch(`http://${process.env.REACT_APP_BACKEND_ADDRESS}:${process.env.REACT_APP_BACKEND_PORT}/api/receipt`, options)
 			.then((response) => response.text())
 			.then((str) => {
 				resetForm()
@@ -122,8 +123,7 @@ function AddOrEditReceipt() {
 
 	return (
 		<div className="AddReceipt">
-			<h1>Dodaj paragon</h1>
-			
+		<h2>Wprowadź dane</h2>			
 			<form onSubmit={submitForm} onReset={resetForm}>
 				<ReceiptFormHeader
 					shopName={shopName} setShopName={setShopName} 

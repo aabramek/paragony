@@ -14,7 +14,6 @@ function ReceiptListItem({receipt, onDelete}) {
 			</p>
 			<table>
 				<thead>
-					
 					<tr>
 						<th>Nazwa produktu</th>
 						<th>Ilość</th>
@@ -26,10 +25,16 @@ function ReceiptListItem({receipt, onDelete}) {
 				<tbody>
 					{receipt.products.map((product) => <Product key={product._id} product={product}/>)}
 				</tbody>
+				<tfoot>
+					<tr>
+						<td>Łączny koszt</td>
+						<td>{receipt.total.toFixed(2)}</td>
+					</tr>
+				</tfoot>
 			</table>
 			<p>
-				<Link to={"/receipt/edit/"} state={receipt}><button>Edytuj <FiEdit/></button></Link>
-				<button onClick={() => onDelete(receipt._id)}>Usuń<FiTrash2/></button>
+				<Link to={"/receipt/edit/"} state={receipt}><button className="btn-edit">Edytuj <FiEdit/></button></Link>
+				<button className="btn-delete" onClick={() => onDelete(receipt._id)}>Usuń<FiTrash2/></button>
 			</p>
 		</div>
 	)

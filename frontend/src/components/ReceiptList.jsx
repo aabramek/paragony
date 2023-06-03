@@ -28,10 +28,10 @@ function ReceiptList() {
 				"Access-Control-Allow-Origin": "*",
 				"Authorization": "Bearer " + auth_token
 			},
-			body: JSON.stringify({_id: i})
+			body: JSON.stringify({receipt_id: i})
 		}
 
-		fetch("http://127.0.0.1:8080/api/receipt", options)
+		fetch(`http://${process.env.REACT_APP_BACKEND_ADDRESS}:${process.env.REACT_APP_BACKEND_PORT}/api/receipt`, options)
 			.then((response) => response.json())
 			.then((json) => {
 				if (json === null) {
@@ -47,6 +47,23 @@ function ReceiptList() {
 		setReceipts(receipts.filter((receipt) => receipt._id != i))
 	}
 
+	function createQueryString() {
+		let query_string = "?"
+		if (shopName !== "") {
+			query_string += "shop.name=" + shopName + "&"
+		}
+		if (shopCity !== "") {
+			query_string += "shop.city=" + shopCity + "&"
+		}
+		if (shopStreet !== "") {
+			query_string += "shop.street=" + shopStreet + "&"
+		}
+		if (datetime !== undefined) {
+			query_string += "datetime=" + datetime + "&" 
+		}
+		return query_string.slice(0, query_string.length - 1)
+	}
+
 	function submitForm(e) {
 		e.preventDefault()
 
@@ -59,7 +76,7 @@ function ReceiptList() {
 			}
 		}
 
-		fetch("http://127.0.0.1:8080/api/receipt", options)
+		fetch(`http://${process.env.REACT_APP_BACKEND_ADDRESS}:${process.env.REACT_APP_BACKEND_PORT}/api/receipt` + createQueryString(), options)
 			.then((response) => response.json())
 			.then((docs) => {
 				setReceipts(docs)
@@ -69,9 +86,8 @@ function ReceiptList() {
 
 	return (
 		<div className="receipt-list">
-			<h1>Pokaż paragony</h1>
-
 			<form onSubmit={submitForm}>
+				<h2>Filtry wyszukiwania</h2>
 				<ReceiptFormHeader
 					shopName={shopName} setShopName={setShopName} 
 					shopCity={shopCity} setShopCity={setShopCity}
@@ -81,7 +97,7 @@ function ReceiptList() {
 
 				<button>Szukaj <FiSearch /></button>
 			</form>
-			<p>Wyniki wyszukiwania</p>
+			<h2>Wyniki wyszukiwania</h2>
 			{
 				receipts.length == 0 ?
 				<p>Lista pusta</p>

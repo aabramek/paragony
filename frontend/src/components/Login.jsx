@@ -51,7 +51,7 @@ function Login({action}) {
 			})
 		}
 
-		fetch("http://127.0.0.1:8080/api/user/" + (action === "login" ? "login" : "register"), options)
+		fetch(`http://${process.env.REACT_APP_BACKEND_ADDRESS}:${process.env.REACT_APP_BACKEND_PORT}/api/user/` + (action === "login" ? "login" : "register"), options)
 			.then((response) => response.json())
 			.then((json) => {
 				if (action === "login") {

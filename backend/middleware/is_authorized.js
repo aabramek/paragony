@@ -8,9 +8,10 @@ function is_authorized(req, res, next) {
 	const token = authHeader.slice(7)
 	try {
 		const payload = jwt.verify(token, process.env.JWT_SECURE_KEY, {algorithms: [process.env.JWT_ALGO]})
+		req.body.user_id = payload._id
 	}
 	catch(error) {
-		res.status(401).send("")
+		res.status(401).json({message: error.message})
 		return
 	}
 	next()

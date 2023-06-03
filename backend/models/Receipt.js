@@ -19,6 +19,8 @@ const receiptSchema = new mongoose.Schema({
 		}
 	],
 
+	total: Number,
+	
 	user_id: mongoose.SchemaTypes.ObjectId
 })
 

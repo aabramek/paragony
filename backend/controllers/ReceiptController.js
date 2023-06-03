@@ -4,7 +4,6 @@ const express = require("express")
 const router = express.Router()
 
 const is_authorized = require("../middleware/is_authorized.js")
-const jwt = require("jsonwebtoken")
 
 router.use(is_authorized)
 
@@ -28,6 +27,7 @@ router.put(
 	"/",
 
 	async function(req, res) {
+		console.log(req.body)
 		const receipt = await Receipt.findByIdAndUpdate(req.body._id, req.body) 
 		res.json(receipt)
 	}
@@ -36,12 +36,12 @@ router.put(
 router.get(
 	"/",
 
-	async function(req, res) {
-		const authHeader = req.headers["authorization"]
-		const token = authHeader.slice(7)
-		const payload = jwt.decode(token)
-		
-		const docs = await Receipt.find({user_id: payload._id})
+	async function(req, res) {	
+		const filter = req.query
+		filter.user_id = req.body.user_id
+		console.log(filter)
+
+		const docs = await Receipt.find(filter)
 		res.json(docs)
 	}
 )
@@ -60,7 +60,7 @@ router.delete(
 
 	async function(req, res) {
 		try {
-			const result = await Receipt.findByIdAndDelete(req.body._id)
+			const result = await Receipt.findByIdAndDelete(req.body.receipt_id)
 			res.json(result)
 		}
 		catch (error) {

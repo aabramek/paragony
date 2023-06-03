@@ -3,8 +3,9 @@ import ReceiptList from "./components/ReceiptList"
 import Receipt from "./components/Receipt"
 import NotFound from "./components/NotFound"
 import Login from "./components/Login"
+import Statistics from "./components/Statistics"
 import "./App.css"
-import {Link, Route, Routes} from "react-router-dom"
+import {NavLink, Route, Routes} from "react-router-dom"
 import {useContext} from "react"
 import AuthContext from "./context/AuthProvider"
 import RequireAuth from "./components/RequireAuth"
@@ -15,24 +16,41 @@ function App() {
     return (
         <div className="App">
             <nav>
-                <ul className="nav-ul">
-                    <Link to="/"><li>Strona główna</li></Link>
+                <ul>
+                    <li>
+                        <NavLink to="/">Strona główna</NavLink>
+                    </li>
                     {
-                        auth_token && 
+                        auth_token &&
                         <>
-                            <Link to="/receipt/add"><li>Dodaj paragon</li></Link>
-                            <Link to="/receipt/show"><li>Pokaż paragony</li></Link>
+                            <li>
+                                <NavLink to="/receipt/add">Dodaj paragon</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/receipt/show">Pokaż paragony</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/statistics">Statystyki</NavLink>
+                            </li>
                         </>
                     }
                 </ul>
-                <ul className="login-ul">
+                <ul>
                     {
-                        auth_token !== "" ?
-                        <Link to="/logout"><li>Wyloguj</li></Link>
+                        auth_token ?
+                        <>
+                            <li>
+                                <NavLink to="/logout">Wyloguj</NavLink>
+                            </li>
+                        </>
                         :
                         <>
-                            <Link to="/login"><li>Zaloguj się</li></Link>
-                            <Link to="/register"><li>Zarejestruj się</li></Link>
+                            <li>
+                                <NavLink to="/login">Zaloguj się</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/register">Zarejestruj się</NavLink>
+                            </li>
                         </>
                     }
                 </ul>
@@ -46,6 +64,7 @@ function App() {
                     <Route path="/receipt/edit" element={<RequireAuth> <AddOrEditReceipt /> </RequireAuth>} />
                     <Route path="/receipt/show" element={<RequireAuth> <ReceiptList /> </RequireAuth>} />
                     <Route path="/receipt/show/:id" element={<RequireAuth> <Receipt /> </RequireAuth>} />
+                    <Route path="/statistics" element={<RequireAuth> <Statistics /> </RequireAuth>} />
 
                     <Route path="/login" element={<Login action="login" />} />
                     <Route path="/register" element={<Login action="register" />} />
@@ -54,7 +73,6 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </section>
-
             <footer>
                 <p>Super strona, panda 3</p>
             </footer>
