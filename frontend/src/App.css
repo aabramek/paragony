@@ -9,8 +9,8 @@ html {
 }
 
 body {
-    background-color: #DBDFEA;
-    min-height: 100vh;
+    background-color: #404040;
+    color: white;
 }
 
 #root {
@@ -26,8 +26,9 @@ body {
 nav {
     display: flex;
     justify-content: space-between;
-    background-color: #8294C4;
-    padding: 5px 0px;
+    background-color: #020202;
+    padding-bottom: 30px;
+    padding-top: 10px;
 }
 
 nav ul {
@@ -47,12 +48,13 @@ nav ul a {
     color: inherit;
     font-size: 1.2rem;
     font-weight: bold;
-    background-color: #FFEAD2;
-    border-radius: 8px;
+    background-color: #fbcf6b;
+    border: 4px solid orange;
+    color: black;
 }
 
 nav ul a.active {
-    background-color: #CFB997;
+    background-color: #bda87a;
 }
 
 nav ul a:hover {
@@ -88,16 +90,95 @@ input[type="submit"]:hover, input[type="reset"]:reset {
 }
 
 footer {
-    margin-top: auto;
-    background-color: #8294C4;
+    margin-top: 100px;
+    background-color: #020202;
     text-align: center;
     padding: 20px;
 }
 
+button {
+    padding: 5px 12px;
+    margin-right: 10px;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+button:hover {
+    color: black;
+    cursor: pointer;
+}
+
 .btn-edit {
-    background-color: green;
+    background-color: gray;
+    border: 4px solid #282828;
+}
+
+.btn-edit:hover {
+    background-color: #c6c6c6;
 }
 
 .btn-delete {
-    background-color: red;
+    background-color: #dd7373;
+    border: 4px solid red;
+}
+
+.btn-delete:hover {
+    background-color: #efacac;
+}
+
+.btn-accept {
+    background-color: #46bf46;
+    border: 4px solid green;
+}
+
+.btn-accept:hover {
+    background-color: #a3e2a3;
+}
+
+.btn-search {
+    background-color: #71b2f7;
+    border: 4px solid #007dff;
+}
+
+.btn-search:hover {
+    background-color: #9bc7f5;
+}
+
+.chart {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.chart-controls {
+    text-align: center;
+}
+
+.chart-controls span {
+    margin-right: 10px;
+}
+
+.chart-controls p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+select {
+    padding: 5px 12px;
+    border-radius: 0;
+}
+
+.receipt-list-item {
+    border: 2px solid orange;
+    margin-top: 40px;
+}
+
+.receipt-list-item table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.receipt-list-item table * {
+    border: 1px solid black;
+    border-collapse: collapse;
 }

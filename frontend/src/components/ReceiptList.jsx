@@ -95,7 +95,7 @@ function ReceiptList() {
 					datetime={datetime} setDatetime={setDatetime}
 					/>
 
-				<button>Szukaj <FiSearch /></button>
+				<button className="btn-search">Szukaj <FiSearch /></button>
 			</form>
 			<h2>Wyniki wyszukiwania</h2>
 			{

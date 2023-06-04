@@ -1,4 +1,4 @@
-import {FiX} from "react-icons/fi"
+import {FiTrash2} from "react-icons/fi"
 
 function ProductEditable(props) {
 
@@ -24,7 +24,7 @@ function ProductEditable(props) {
 				</select>
 			</td>
 			<td>
-				<button type="button" onClick={() => props.onProductDelete(props.product._id ? props.product._id : props.product.id)}>Usuń <FiX /></button>
+				<button type="button" className="btn-delete" onClick={() => props.onProductDelete(props.product._id ? props.product._id : props.product.id)}>Usuń <FiTrash2 /></button>
 			</td>
 		</tr>
 	)

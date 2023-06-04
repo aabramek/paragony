@@ -27,14 +27,14 @@ function ReceiptListItem({receipt, onDelete}) {
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>Łączny koszt</td>
+						<td colspan="4">Łączny koszt</td>
 						<td>{receipt.total.toFixed(2)}</td>
 					</tr>
 				</tfoot>
 			</table>
 			<p>
 				<Link to={"/receipt/edit/"} state={receipt}><button className="btn-edit">Edytuj <FiEdit/></button></Link>
-				<button className="btn-delete" onClick={() => onDelete(receipt._id)}>Usuń<FiTrash2/></button>
+				<button className="btn-delete" onClick={() => onDelete(receipt._id)}>Usuń <FiTrash2/></button>
 			</p>
 		</div>
 	)

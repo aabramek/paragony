@@ -4,7 +4,7 @@ import Product from "./Product"
 import ProductEditable from "./ProductEditable"
 import AuthContext from "../context/AuthProvider"
 import ReceiptFormHeader from "./ReceiptFormHeader"
-import {FiPlusCircle} from "react-icons/fi"
+import {FiPlusCircle, FiFilePlus, FiTrash2} from "react-icons/fi"
 
 function AddOrEditReceipt() {
 	const {auth_userid, auth_token} = useContext(AuthContext)
@@ -174,8 +174,8 @@ function AddOrEditReceipt() {
 						</table>
 				</fieldset>
 
-				<input type="submit" value={state ? "Edytuj paragon" : "Dodaj paragon"} />
-				<input type="reset" value="Wyczyść formularz" />
+				<button type="submit" className="btn-accept">{state ? "Zatwierdź zmiany" : "Dodaj paragon"} <FiFilePlus /></button>
+				<button type="reset" className="btn-delete">Wyczyść formularz <FiTrash2 /></button>
 			</form>
 		</div>
 	)

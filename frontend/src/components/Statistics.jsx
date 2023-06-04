@@ -5,9 +5,12 @@ import {
     CategoryScale,
     LinearScale,
     BarElement,
+    LineElement,
+    PointElement,
     Title,
+    SubTitle,
     Tooltip,
-    Legend,
+    Legend
 } from "chart.js"
 
 import AuthContext from "../context/AuthProvider"
@@ -21,10 +24,19 @@ function Statistics() {
         CategoryScale,
         LinearScale,
         BarElement,
+        LineElement,
+        PointElement,
         Title,
+        SubTitle,
         Tooltip,
         Legend
-    );
+    )
+
+    ChartJS.defaults.color = "white"
+    ChartJS.defaults.borderColor = "white"
+    ChartJS.defaults.plugins.title.font = {size: 24}
+    ChartJS.defaults.plugins.legend.labels.font = {size: 16}
+    ChartJS.defaults.plugins.subtitle.font = {size: 18}
 
     function loadChartData(method, callback, query) {
         const options = {

@@ -1,21 +1,47 @@
 import {useState, useEffect} from "react"
-
-import { Bar } from "react-chartjs-2"
+import {FiSearch} from "react-icons/fi"
+import { Line } from "react-chartjs-2"
+import months from "./months_list.js"
 
 function MoneySpent({loadChartData}) {
     const [chartData, setChartData] = useState([])
     const [chartLabels, setChartLabels] = useState([])
+    const [chartSubtitle, setChartSubtitle] = useState("Wszystkie lata")
+    const [year, setYear] = useState("")
 
     const chartParams = {
         options: {
             responsive: true,
+            
             plugins: {
                 legend: {
-                    position: 'bottom',
+                    position: "bottom",
                 },
                 title: {
                     display: true,
-                    text: 'Wielkość wydatków w poszczególnych miesiącach',
+                    text: "Wielkość wydatków w poszczególnych miesiącach ",
+                },
+                subtitle: {
+                    display: true,
+                    text: chartSubtitle
+                }
+            },
+            
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+
+            elements: {
+                point: {
+                    radius: 6,
+                    hoverRadius: 8,
+                    backgroundColor: "rgb(179, 125, 6)"
+                },
+
+                line: {
+                    borderColor: "rgb(248, 173, 5)"
                 }
             }
         },
@@ -25,39 +51,65 @@ function MoneySpent({loadChartData}) {
             datasets: [
                 {
                     label: 'Wielkość wydatków',
-                    data: chartData,
-                    backgroundColor: 'green'
+                    data: chartData
                 }
             ]
         }
     }
 
-    const months = new Map()
-    months.set("01", "Styczeń")
-    months.set("02", "Luty")
-    months.set("03", "Marzec")
-    months.set("04", "Kwiecień")
-    months.set("05", "Maj")
-    months.set("06", "Czerwiec")
-    months.set("07", "Lipiec")
-    months.set("08", "Sierpień")
-    months.set("09", "Wrzesień")
-    months.set("10", "Październik")
-    months.set("11", "Listopad")
-    months.set("12", "Grudzień")
+    function updateChart() {
+        loadChartData(
+            "money_spent",
 
-    useEffect(
-        () => loadChartData(
-                "money_spent",
-                (json) => {
-                    setChartData(json.map(e => e.total))
-                    setChartLabels(json.map(e => months.get(e._id)))
-                }),
-        [])
+            (json) => {
+                const values = Array(12)
+                let j = 0
+                for (let i = 0; i < 12; ++i) {
+                    if (j < json.length && json[j]._id === i) {
+                        values[i] = json[j].total
+                        ++j
+                    }
+                    else {
+                        values[i] = 0
+                    }
+                }
+                setChartData(values)
+                setChartLabels(months)
+                setChartSubtitle(year ? `Rok ${year}` : "Wszystkie lata")
+            },
 
+            `year=${year}`
+        )
+    }
+
+    useEffect(updateChart, [])
+
+    function submitForm(e) {
+        e.preventDefault()
+        updateChart()
+    }
 
     return (
-        <Bar options={chartParams.options} data={chartParams.data} />
+        <div className="chart">
+            <Line options={chartParams.options} data={chartParams.data} />
+            <div className="chart-controls">
+                <h3>Filtruj dane</h3>
+                <form onSubmit={submitForm}>
+                    <p>
+                        <span>Wybierz rok</span>
+                        <select value={year} onChange={e => {setYear(e.target.value)}}>
+                            <option value="">Wszystkie lata</option>
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                         </select>
+                     </p>
+                     <button type="button" className="btn-edit" onClick={() => setYear("")}>Resetuj ustawienia</button>
+                     <button className="btn-search">Filtruj <FiSearch /></button>
+                </form>
+            </div>
+        </div>
     )
 }
 
