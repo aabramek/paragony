@@ -1,5 +1,4 @@
 const Receipt = require("../models/Receipt.js")
-
 const express = require("express")
 const router = express.Router()
 
@@ -11,15 +10,19 @@ router.post(
 	"/",
 	
 	async function(req, res) {
+		const receipt = new Receipt(req.body)
 		try {
-			const receipt = new Receipt(req.body)
 			await receipt.save()
 			res.json(receipt)
 		}
 		catch (error) {
-			console.log(error)
-			res.status(400).json({message: "Bad request"})
+			msg = ""
+			for (field in error.errors) {
+				msg += error.errors[field].message + "\n"
+			}
+			return res.status(400).json({message: msg})
 		}
+		res.status(201).json(receipt)
 	}
 )
 
@@ -64,12 +67,7 @@ router.delete(
 			res.json(result)
 		}
 		catch (error) {
-			if (error.name === "CastError") {
-				return res.status(400).json({message: "Invalid id"})
-			}
-			
-			console.log(error)
-			return res.status(500).json({message: "Internal server error :3"})
+			return res.status(400).json({message: "Invalid id"})
 		}
 	}
 )

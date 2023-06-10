@@ -24,7 +24,7 @@ function App() {
                         auth_token &&
                         <>
                             <li>
-                                <NavLink to="/receipt/add">Dodaj paragon</NavLink>
+                                <NavLink to="/receipt/add" state={null}>Dodaj paragon</NavLink>
                             </li>
                             <li>
                                 <NavLink to="/receipt/show">Pokaż paragony</NavLink>
@@ -58,7 +58,7 @@ function App() {
 
             <section>
                 <Routes>
-                    <Route path="/" element={<h1>Hello World :3</h1>} />
+                    <Route path="/" element={<h1>Strona główna</h1>} />
 
                     <Route path="/receipt/add" element={<RequireAuth> <AddOrEditReceipt /> </RequireAuth>} />
                     <Route path="/receipt/edit" element={<RequireAuth> <AddOrEditReceipt /> </RequireAuth>} />
@@ -74,7 +74,7 @@ function App() {
                 </Routes>
             </section>
             <footer>
-                <p>Super strona, panda 3</p>
+                <p>&copy; Aleksander Abramowicz 2023</p>
             </footer>
         </div>
     );

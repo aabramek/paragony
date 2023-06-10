@@ -17,7 +17,7 @@ function Login({action}) {
 
 	function handle_login(json) {
 		if (json.message !== "Logged in successfully") {
-			window.alert("Nie udało się zalogować")
+			window.alert("Nie udało się zalogować:\n" + json.message)
 			return
 		}
 		setAuthToken(json.token)
@@ -27,7 +27,7 @@ function Login({action}) {
 
 	function handle_register(json) {
 		if (json.message !== "User created successfully") {
-			window.alert("Nie udało się zarejestrować")
+			window.alert("Nie udało się zarejestrować:\n " + json.message)
 			return
 		}
 
@@ -58,7 +58,7 @@ function Login({action}) {
 					handle_login(json)
 				}
 				else {
-					handle_register("json")
+					handle_register(json)
 				}
 			})
 			.catch((error) => console.log(error))
@@ -67,8 +67,8 @@ function Login({action}) {
 	return (
 		<div className="login">
 			<form onSubmit={submitForm}>
-				<input type="text" name="username" placeholder="Login" value={username} onChange={(e) => setLogin(e.target.value)} />
-				<input type="password" name="password" placeholder="Hasło" value={password} onChange={(e) => setPassword(e.target.value)} />
+				<input type="text" name="username" required placeholder="Login" value={username} onChange={(e) => setLogin(e.target.value)} />
+				<input type="password" name="password" required placeholder="Hasło" value={password} onChange={(e) => setPassword(e.target.value)} />
 				<input type="submit" value={action === "login" ? "Zaloguj się" : "Zarejestruj się"}/>
 			</form>
 		</div>

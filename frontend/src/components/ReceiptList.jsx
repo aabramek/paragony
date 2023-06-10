@@ -80,6 +80,9 @@ function ReceiptList() {
 			.then((response) => response.json())
 			.then((docs) => {
 				setReceipts(docs)
+				if (docs.length === 0) {
+					alert("Brak wyników, spróbuj zmienić filtry wyszukiwania")
+				}
 			})
 			.catch((error) => console.log(error))
 	}

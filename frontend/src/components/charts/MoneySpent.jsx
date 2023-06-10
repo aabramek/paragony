@@ -64,13 +64,13 @@ function MoneySpent({loadChartData}) {
             (json) => {
                 const values = Array(12)
                 let j = 0
-                for (let i = 0; i < 12; ++i) {
+                for (let i = 1; i <= 12; ++i) {
                     if (j < json.length && json[j]._id === i) {
-                        values[i] = json[j].total
+                        values[i - 1] = json[j].total
                         ++j
                     }
                     else {
-                        values[i] = 0
+                        values[i - 1] = 0
                     }
                 }
                 setChartData(values)

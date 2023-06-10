@@ -101,9 +101,11 @@ function AddOrEditReceipt() {
 		}
 
 		fetch(`http://${process.env.REACT_APP_BACKEND_ADDRESS}:${process.env.REACT_APP_BACKEND_PORT}/api/receipt`, options)
-			.then((response) => response.text())
-			.then((str) => {
-				resetForm()
+			.then((response) => response.json())
+			.then((json) => {
+				if (json.message) {
+					alert(json.message)
+				}
 			})
 			.catch((error) => console.log(error))
 	}
@@ -130,6 +132,7 @@ function AddOrEditReceipt() {
 					shopCity={shopCity} setShopCity={setShopCity}
 					shopStreet={shopStreet} setShopStreet={setShopStreet}
 					datetime={datetime} setDatetime={setDatetime}
+					required={true}
 					/>
 
 				<fieldset>
@@ -154,23 +157,26 @@ function AddOrEditReceipt() {
 										onProductDelete={deleteProduct}
 									/>)
 								}
-								<tr>
+							</tbody>
+							<tfoot>
+								<tr className="new-product">
 									<td><input type="text" id="productName" name="productName" onChange={(e) => setProductName(e.target.value)} value={productName} /></td>
-									<td><input type="text" id="productAmount" name="productAmount" onChange={(e) => setProductAmount(e.target.value)} value={productAmount}  /></td>
-									<td><input type="text" id="productPrice" name="productPrice" onChange={(e) => setProductPrice(e.target.value)} value={productPrice} /></td>
-									<td><input type="text" id="productDiscount" name="productDiscount" onChange={(e) => setProductDiscount(e.target.value)} value={productDiscount} /></td>
+									<td><input type="number" min="1" id="productAmount" name="productAmount" onChange={(e) => setProductAmount(e.target.value)} value={productAmount}  /></td>
+									<td><input type="number" id="productPrice" name="productPrice" onChange={(e) => setProductPrice(e.target.value)} value={productPrice} /></td>
+									<td><input type="number" id="productDiscount" name="productDiscount" onChange={(e) => setProductDiscount(e.target.value)} value={productDiscount} /></td>
 									<td>
 										<select id="productTaxRate" name="productTaxRate" onChange={(e) => setProductTaxRate(e.target.value)} value={productTaxRate}>
 											<option value="D">D - 0%</option>
+											<option value="C">C - 0%</option>
 											<option value="B">B - 8%</option>
 											<option value="A">A - 23%</option>
 										</select>
 									</td>
 									<td>
-										<button type="button" onClick={addProduct}>Dodaj produkt <FiPlusCircle /></button>
+										<button type="button" className="btn-edit" onClick={addProduct}>Dodaj produkt <FiPlusCircle /></button>
 									</td>
 								</tr>
-							</tbody>
+							</tfoot>
 						</table>
 				</fieldset>
 

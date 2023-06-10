@@ -19,6 +19,7 @@ function ProductEditable(props) {
 			<td>
 				<select value={props.product.taxRate} onChange={(e) => props.onProductUpdate(props.product._id ? props.product._id : props.product.id, "taxRate", e.target.value)}>
 					<option value="D">D - 0%</option>
+					<option value="C">C - 0%</option>
 					<option value="B">B - 8%</option>
 					<option value="A">A - 23%</option>
 				</select>

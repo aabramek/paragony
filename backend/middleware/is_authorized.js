@@ -11,8 +11,7 @@ function is_authorized(req, res, next) {
 		req.body.user_id = payload._id
 	}
 	catch(error) {
-		res.status(401).json({message: error.message})
-		return
+		return res.status(401).json({message: error.message})
 	}
 	next()
 }
