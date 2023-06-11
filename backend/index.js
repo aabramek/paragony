@@ -15,4 +15,4 @@ app.use("/api/receipt", receipt_controller)
 app.use("/api/user", user_controller)
 app.use("/api/statistic", statistic_controller)
 
-app.listen(process.env.PORT, function() {console.log("serwer bzika")})
+app.listen(process.env.PORT, function() {console.log(`Serwer działa na porcie ${process.env.PORT}`)})

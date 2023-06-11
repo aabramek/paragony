@@ -40,7 +40,6 @@ router.post(
 		const user = await User.findOne({name: username})
 
 		if (user !== null) {
-			console.log(user)
 			res.status(409).json({message: "User with provided username already exists"})
 			return
 		}
