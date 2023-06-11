@@ -94,7 +94,6 @@ function AddOrEditReceipt() {
 			method: state ? "PUT" : "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "*",
 				"Authorization": "Bearer " + auth_token
 			},
 			body: JSON.stringify(receipt)

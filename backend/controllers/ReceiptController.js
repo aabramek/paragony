@@ -30,7 +30,6 @@ router.put(
 	"/",
 
 	async function(req, res) {
-		console.log(req.body)
 		const receipt = await Receipt.findByIdAndUpdate(req.body._id, req.body) 
 		res.json(receipt)
 	}
@@ -42,7 +41,6 @@ router.get(
 	async function(req, res) {	
 		const filter = req.query
 		filter.user_id = req.body.user_id
-		console.log(filter)
 
 		const docs = await Receipt.find(filter)
 		res.json(docs)

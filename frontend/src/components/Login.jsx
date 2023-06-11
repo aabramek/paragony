@@ -42,7 +42,6 @@ function Login({action}) {
 			
 			headers: {
 				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "*"
 			},
 			
 			body: JSON.stringify({
