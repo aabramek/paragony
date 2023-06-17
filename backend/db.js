@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true})
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, user: process.env.MONGO_USER, pass: process.env.MONGO_PASSWORD})
 	.then(function(result) {
 		console.log("Connection to database established")
 	})

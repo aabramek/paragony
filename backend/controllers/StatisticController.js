@@ -55,15 +55,21 @@ router.get(
 			$project: {
 				"year": {$substrBytes: ["$datetime", 0, 4]},
 				"month": {$toInt: {$substrBytes: ["$datetime", 5, 2]}},
-				"total": 1
+				"total": 1,
+				"user_id": 1
 			}
 		})
 		
+		const match_stage_filters = {
+			user_id: id
+		}
+
 		const year = req.query.year
 		if (year !== "") {
-			aggregation_pipeline.push({$match: {"year": year}})
+			match_stage_filters.year = year
 		}
 		
+		aggregation_pipeline.push({$match: match_stage_filters})
 		aggregation_pipeline.push({$group: {"_id": "$month", "total": {$sum: "$total"}}})
 		aggregation_pipeline.push({$sort: {"_id": 1}})
 		
