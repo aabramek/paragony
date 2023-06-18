@@ -5,6 +5,7 @@ import ProductEditable from "./ProductEditable"
 import AuthContext from "../context/AuthProvider"
 import ReceiptFormHeader from "./ReceiptFormHeader"
 import {FiPlusCircle, FiFilePlus, FiTrash2} from "react-icons/fi"
+import {nanoid} from "nanoid"
 
 function AddOrEditReceipt() {
 	const {auth_userid, auth_token} = useContext(AuthContext)
@@ -26,28 +27,27 @@ function AddOrEditReceipt() {
 	const [productTaxRate, setProductTaxRate] = useState("D")
 
 	function addProduct() {
+		if (!(productName && productAmount && productPrice)) {
+			alert("Podaj wszysztkie dane!")
+			return
+		}
+
 		const newProduct = {
 			name: productName,
 			amount: productAmount,
 			price: productPrice,
 			discount: productDiscount,
 			taxRate: productTaxRate,
-			id: crypto.randomUUID()
+			id: nanoid()
 		}
 
-		if (productName && productAmount && productPrice) {
-			setProducts([...products, newProduct])
+		setProducts([...products, newProduct])
 
-			setProductName("")
-			setProductAmount("")
-			setProductPrice("")
-			setProductDiscount("")
-			setProductTaxRate("D")
-		}
-		else {
-			alert("Podaj wszysztkie dane!")
-		}
-		
+		setProductName("")
+		setProductAmount("")
+		setProductPrice("")
+		setProductDiscount("")
+		setProductTaxRate("D")
 	}
 
 	function updateProduct(id, property, value) {

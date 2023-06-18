@@ -50,7 +50,6 @@ function TotalPurchases({loadChartData}) {
                 setChartData(json.map(e => e.total))
                 setChartLabels(json.map(e => e._id))
                 let sub_title = (year ? `Rok ${year}, ` : "Wszystkie lata, ") + (month ? `miesiąc ${months[parseInt(month) - 1]}` : "wszsytkie miesiące")
-                console.log(month)
                 setChartSubtitle(sub_title)
             },
 
