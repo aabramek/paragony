@@ -1,6 +1,5 @@
 import AddOrEditReceipt from "./components/AddOrEditReceipt"
 import ReceiptList from "./components/ReceiptList"
-import Receipt from "./components/Receipt"
 import NotFound from "./components/NotFound"
 import Login from "./components/Login"
 import Statistics from "./components/Statistics"
@@ -63,7 +62,6 @@ function App() {
                     <Route path="/receipt/add" element={<RequireAuth> <AddOrEditReceipt /> </RequireAuth>} />
                     <Route path="/receipt/edit" element={<RequireAuth> <AddOrEditReceipt /> </RequireAuth>} />
                     <Route path="/receipt/show" element={<RequireAuth> <ReceiptList /> </RequireAuth>} />
-                    <Route path="/receipt/show/:id" element={<RequireAuth> <Receipt /> </RequireAuth>} />
                     <Route path="/statistics" element={<RequireAuth> <Statistics /> </RequireAuth>} />
 
                     <Route path="/login" element={<Login action="login" />} />

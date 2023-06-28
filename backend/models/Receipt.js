@@ -27,15 +27,22 @@ const receiptSchema = new mongoose.Schema({
 		}
 	},
 
-	datetime: {
+	date: {
 		type: String,
 		trim: true,
 		required: [true, "Data zakupu jest wymagana"],
-		validate: [v => /^\d{4}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-6][0-9]$/.test(v), "{VALUE} nie spełnia wymaganego formatu danych: YYYY-MM-DDTHH:MM"]
+		validate: [v => /^\d{4}-[0-1][0-9]-[0-3][0-9]$/.test(v), "{VALUE} nie spełnia wymaganego formatu danych: YYYY-MM-DD"]
 	},
 
-	products: [
-		{
+	time: {
+		type: String,
+		trim: true,
+		required: [true, "Godzina zakupu jest wymagana"],
+		validate: [v => /^[0-2][0-9]:[0-6][0-9]$/.test(v), "{VALUE} nie spełnia wymaganego formatu danych: HH:MM"]
+	},
+
+	products: {
+		type: [{
 			name: {
 				type: String,
 				trim: true,
@@ -66,8 +73,10 @@ const receiptSchema = new mongoose.Schema({
 				enum: {values: ["A", "B", "C", "D"], message: "Stawka podatkowa powinna być wybrana z listy: A, B, C lub D"},
 				required: [true, "Stawka podatkowa produktu jest wymagana"]
 			}
-		}
-	],
+		}],
+
+		validate: [v => v.length > 0, "Lista produktów nie może być pusta"]
+	},
 
 	total: {
 		type: Number,

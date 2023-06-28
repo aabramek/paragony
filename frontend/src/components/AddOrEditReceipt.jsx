@@ -3,7 +3,6 @@ import {useLocation} from "react-router-dom"
 import Product from "./Product"
 import ProductEditable from "./ProductEditable"
 import AuthContext from "../context/AuthProvider"
-import ReceiptFormHeader from "./ReceiptFormHeader"
 import {FiPlusCircle, FiFilePlus, FiTrash2} from "react-icons/fi"
 import {nanoid} from "nanoid"
 
@@ -16,8 +15,9 @@ function AddOrEditReceipt() {
 	const [shopCity, setShopCity] = useState(state ? state.shop.city : "")
 	const [shopStreet, setShopStreet] = useState(state ? state.shop.street : "")
 	
-	const [datetime, setDatetime] = useState(state ? state.datetime : "")
-	
+	const [date, setDate] = useState(state ? state.date : "")
+	const [time, setTime] = useState(state ? state.time : "")
+
 	const [products, setProducts] = useState(state ? state.products : [])
 
 	const [productName, setProductName] = useState("")
@@ -41,7 +41,7 @@ function AddOrEditReceipt() {
 			id: nanoid()
 		}
 
-		setProducts([...products, newProduct])
+		setProducts(currentValue => [...currentValue, newProduct])
 
 		setProductName("")
 		setProductAmount("")
@@ -51,7 +51,7 @@ function AddOrEditReceipt() {
 	}
 
 	function updateProduct(id, property, value) {
-		const p = products.map((product) => {
+		const p = products.map(product => {
 			if (product.id == id || product._id == id) {
 				switch (property) {
 					case "name": product.name = value; break;
@@ -67,7 +67,7 @@ function AddOrEditReceipt() {
 	}
 
 	function deleteProduct(id) {
-		setProducts(products.filter((product) => product.id != id && product._id != id))
+		setProducts(products.filter(product => product.id != id && product._id != id))
 	}
 
 	function submitForm(e) {
@@ -79,9 +79,9 @@ function AddOrEditReceipt() {
 				city: shopCity,
 				street: shopStreet
 			},
-
-			datetime: datetime,
-			products: products.map((product) => {if (product.id) delete product.id; return product}),
+			date: date,
+			time: time,
+			products: products.map(product => {if (product.id) delete product.id; return product}),
 			total: products.reduce((acc, product) => acc + product.price * product.amount - product.discount, 0),
 			user_id: auth_userid
 		}
@@ -100,20 +100,25 @@ function AddOrEditReceipt() {
 		}
 
 		fetch(`http://${process.env.REACT_APP_BACKEND_ADDRESS}:${process.env.REACT_APP_BACKEND_PORT}/api/receipt`, options)
-			.then((response) => response.json())
-			.then((json) => {
+			.then(response => response.json())
+			.then(json => {
 				if (json.message) {
 					alert(json.message)
 				}
+				else {
+					resetForm()
+				}
 			})
-			.catch((error) => console.log(error))
+			.catch(error => console.log(error))
 	}
 
-	function resetForm() {
+	function resetForm(e) {
+		e.preventDefault()
 		setShopName("")
 		setShopCity("")
 		setShopStreet("")
-		setDatetime("")
+		setDate("")
+		setTime("")
 		setProductName("")
 		setProductAmount("")
 		setProductPrice("")
@@ -126,13 +131,33 @@ function AddOrEditReceipt() {
 		<div className="AddReceipt">
 		<h2>Wprowadź dane</h2>			
 			<form onSubmit={submitForm} onReset={resetForm}>
-				<ReceiptFormHeader
-					shopName={shopName} setShopName={setShopName} 
-					shopCity={shopCity} setShopCity={setShopCity}
-					shopStreet={shopStreet} setShopStreet={setShopStreet}
-					datetime={datetime} setDatetime={setDatetime}
-					required={true}
-					/>
+				<fieldset>
+					<legend>Dane zakupu</legend>
+					<p>
+						<label htmlFor="shopName">Nazwa sklepu</label>
+						<input type="text" name="shopName" id="shopName" value={shopName} onChange={e => setShopName(e.target.value)} required={true} />
+					</p>
+
+					<p>		
+						<label htmlFor="shopCity">Miejscowość</label>
+						<input type="text" name="shopCity" id="shopCity" value={shopCity} onChange={e => setShopCity(e.target.value)} required={true} />
+					</p>
+
+					<p>
+						<label htmlFor="shopStreet">Ulica</label>
+						<input type="text" name="shopStreet" id="shopStreet" value={shopStreet} onChange={e => setShopStreet(e.target.value)} required={true} />
+					</p>
+
+					<p>
+						<label htmlFor="date">Data</label>
+						<input type="date" name="date" id="date" value={date} onChange={e => {setDate(e.target.value)}} required={true} />
+					</p>
+
+					<p>
+						<label htmlFor="time">Godzina</label>
+						<input type="time" name="time" id="time" value={time} onChange={e => {setTime(e.target.value)}} required={true} />
+					</p>
+				</fieldset>
 
 				<fieldset>
 					<legend>Lista produktów</legend>
@@ -149,7 +174,7 @@ function AddOrEditReceipt() {
 							</thead>
 							<tbody>
 								{
-									products.map((product) => <ProductEditable
+									products.map(product => <ProductEditable
 										key={product._id ? product._id : product.id} 
 										product={product}
 										onProductUpdate={updateProduct}
@@ -159,12 +184,12 @@ function AddOrEditReceipt() {
 							</tbody>
 							<tfoot>
 								<tr className="new-product">
-									<td><input type="text" id="productName" name="productName" onChange={(e) => setProductName(e.target.value)} value={productName} /></td>
-									<td><input type="number" min="1" id="productAmount" name="productAmount" onChange={(e) => setProductAmount(e.target.value)} value={productAmount}  /></td>
-									<td><input type="number" id="productPrice" name="productPrice" onChange={(e) => setProductPrice(e.target.value)} value={productPrice} /></td>
-									<td><input type="number" id="productDiscount" name="productDiscount" onChange={(e) => setProductDiscount(e.target.value)} value={productDiscount} /></td>
+									<td><input type="text" id="productName" name="productName" onChange={e => setProductName(e.target.value)} value={productName} /></td>
+									<td><input type="number" min="1" id="productAmount" name="productAmount" onChange={e => setProductAmount(e.target.value)} value={productAmount}  /></td>
+									<td><input type="number" id="productPrice" name="productPrice" onChange={e => setProductPrice(e.target.value)} value={productPrice} /></td>
+									<td><input type="number" id="productDiscount" name="productDiscount" onChange={e => setProductDiscount(e.target.value)} value={productDiscount} /></td>
 									<td>
-										<select id="productTaxRate" name="productTaxRate" onChange={(e) => setProductTaxRate(e.target.value)} value={productTaxRate}>
+										<select id="productTaxRate" name="productTaxRate" onChange={e => setProductTaxRate(e.target.value)} value={productTaxRate}>
 											<option value="D">D - 0%</option>
 											<option value="C">C - 0%</option>
 											<option value="B">B - 8%</option>

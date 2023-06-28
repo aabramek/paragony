@@ -16,8 +16,8 @@ router.get(
 		const aggregation_pipeline = []
 		aggregation_pipeline.push({
 			$project: {
-				"year": {$substrBytes: ["$datetime", 0, 4]},
-				"month": {$substrBytes: ["$datetime", 5, 2]},
+				"year": {$substrBytes: ["$date", 0, 4]},
+				"month": {$substrBytes: ["$date", 5, 2]},
 				"shop.name": 1,
 				"user_id": 1
 			}
@@ -53,8 +53,8 @@ router.get(
 		const aggregation_pipeline = []
 		aggregation_pipeline.push({
 			$project: {
-				"year": {$substrBytes: ["$datetime", 0, 4]},
-				"month": {$toInt: {$substrBytes: ["$datetime", 5, 2]}},
+				"year": {$substrBytes: ["$date", 0, 4]},
+				"month": {$toInt: {$substrBytes: ["$date", 5, 2]}},
 				"total": 1,
 				"user_id": 1
 			}

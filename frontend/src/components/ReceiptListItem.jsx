@@ -10,7 +10,7 @@ function ReceiptListItem({receipt, onDelete}) {
 				<br />
 				{receipt.shop.city} {receipt.shop.street}
 				<br />
-				{receipt.datetime}
+				{receipt.date} {receipt.time}
 			</p>
 			<table>
 				<thead>
@@ -23,7 +23,7 @@ function ReceiptListItem({receipt, onDelete}) {
 					</tr>
 				</thead>
 				<tbody>
-					{receipt.products.map((product) => <Product key={product._id} product={product}/>)}
+					{receipt.products.map(product => <Product key={product._id} product={product} />)}
 				</tbody>
 				<tfoot>
 					<tr>

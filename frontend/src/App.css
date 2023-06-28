@@ -82,7 +82,7 @@ input[type="submit"], input[type="reset"] {
 }
 
 input {
-    padding: 5px 12px;
+    padding: 2px 6px;
 }
 
 .login input {
@@ -120,6 +120,17 @@ button {
 button:hover {
     color: black;
     cursor: pointer;
+}
+
+.pagination-menu button {
+    margin: 0;
+    color: black;
+    padding: 2px;
+}
+
+.pagination-menu span {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .btn-edit {
@@ -210,8 +221,7 @@ select {
     padding: 5px 10px;
 }
 
-.receipt-list-item tbody tr td:last-child,
-.receipt-list-item tfoot tr td:last-child {
+.receipt-list-item td:last-child {
     text-align: right;
 }
 
@@ -232,4 +242,18 @@ legend {
 
 .login input {
     margin-bottom: 10px;
+}
+
+fieldset p {
+    margin-bottom: 10px;
+}
+
+fieldset p input {
+    margin: 0px 8px;
+}
+
+.search-form-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
 }
