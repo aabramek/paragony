@@ -112,8 +112,7 @@ function AddOrEditReceipt() {
 			.catch(error => console.log(error))
 	}
 
-	function resetForm(e) {
-		e.preventDefault()
+	function resetForm() {
 		setShopName("")
 		setShopCity("")
 		setShopStreet("")

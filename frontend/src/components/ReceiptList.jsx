@@ -101,8 +101,13 @@ function ReceiptList() {
 			.then(response => response.json())
 			.then(json => {
 				setReceipts(json.receipts)
+				if (!switchPage) {
+					setCurrentPage(1)
+				}
+				else {
+					setSwitchPage(false)
+				}
 				setNumberOfPages(json.numberOfPages)
-				setSwitchPage(false)
 				if (json.receipts.length == 0) {
 					alert("Brak wyników, spróbuj zmienić filtry wyszukiwania")
 				}
