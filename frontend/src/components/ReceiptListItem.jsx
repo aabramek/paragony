@@ -27,7 +27,7 @@ function ReceiptListItem({receipt, onDelete}) {
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="4">Łączny koszt</td>
+						<td colSpan="4">Łączny koszt</td>
 						<td>{receipt.total.toFixed(2)}</td>
 					</tr>
 				</tfoot>

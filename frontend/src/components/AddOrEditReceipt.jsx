@@ -122,7 +122,7 @@ function AddOrEditReceipt() {
 		setProductAmount("")
 		setProductPrice("")
 		setProductDiscount("")
-		setProductTaxRate("")
+		setProductTaxRate("D")
 		setProducts([])
 	}
 
