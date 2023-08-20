@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 function is_authorized(req, res, next) {
 	const authHeader = req.headers["authorization"]
 	if (authHeader === undefined) {
-		res.status(401).json({message: "No authrozation provided"})
+		return res.status(401).json({message: "No authrozation provided"})
 	}
 	const token = authHeader.slice(7)
 	try {

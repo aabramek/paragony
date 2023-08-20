@@ -61,7 +61,7 @@ function MoneySpent({loadChartData}) {
         loadChartData(
             "money_spent",
 
-            (json) => {
+            json => {
                 const values = Array(12)
                 let j = 0
                 for (let i = 1; i <= 12; ++i) {
@@ -96,8 +96,8 @@ function MoneySpent({loadChartData}) {
                 <h3>Filtruj dane</h3>
                 <form onSubmit={submitForm}>
                     <p>
-                        <span>Wybierz rok</span>
-                        <select value={year} onChange={e => {setYear(e.target.value)}}>
+                        <label for="money-spent-year">Wybierz rok</label>
+                        <select id="money-spent-year" value={year} onChange={e => {setYear(e.target.value)}}>
                             <option value="">Wszystkie lata</option>
                             <option value="2020">2020</option>
                             <option value="2021">2021</option>

@@ -46,7 +46,7 @@ function TotalPurchases({loadChartData}) {
         loadChartData(
             "total_purchases",
 
-            (json) => {
+            json => {
                 setChartData(json.map(e => e.total))
                 setChartLabels(json.map(e => e._id))
                 let sub_title = (year ? `Rok ${year}, ` : "Wszystkie lata, ") + (month ? `miesiąc ${months[parseInt(month) - 1]}` : "wszsytkie miesiące")
@@ -71,8 +71,8 @@ function TotalPurchases({loadChartData}) {
             <h3>Filtruj dane</h3>
             <form onSubmit={submitForm}>
                  <p>
-                    <span>Wybierz rok:</span> 
-                    <select value={year} onChange={e => setYear(e.target.value)}>
+                    <label for="total_purchases_year">Wybierz rok:</label> 
+                    <select id="total_purchases_year" value={year} onChange={e => setYear(e.target.value)}>
                         <option value="">Wszystkie lata</option>
                         <option value="2020">2020</option>
                         <option value="2021">2021</option>
@@ -82,8 +82,8 @@ function TotalPurchases({loadChartData}) {
                 </p>
 
                 <p>
-                    <span>Wybierz miesiąc:</span>
-                    <select value={month} onChange={e => setMonth(e.target.value)}>
+                    <label for="total_purchases_month">Wybierz miesiąc:</label>
+                    <select id="total_purchases_month" value={month} onChange={e => setMonth(e.target.value)}>
                         <option value="">Wszystkie miesące</option>
                         <option value="01">Styczeń</option>
                         <option value="02">Luty</option>

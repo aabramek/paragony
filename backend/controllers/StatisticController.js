@@ -72,9 +72,46 @@ router.get(
 		aggregation_pipeline.push({$match: match_stage_filters})
 		aggregation_pipeline.push({$group: {"_id": "$month", "total": {$sum: "$total"}}})
 		aggregation_pipeline.push({$sort: {"_id": 1}})
-		
+
 		const data = await Receipt.aggregate(aggregation_pipeline)
 		res.json(data)
+	}
+)
+
+router.get(
+	"/product_price_history",
+
+	async function (req, res) {
+		const product_name = req.query["productName"] ? req.query["productName"] : ""
+		const aggregation_pipeline = [
+			{$match: {"products.name": product_name}},
+			{$unwind: "$products"},
+			{$match: {"products.name": product_name}},
+			{$project: {"_id": false, "date": true, "price": "$products.price"}},
+			{$sort: {"date": 1}}
+		]
+		const data = await Receipt.aggregate(aggregation_pipeline)
+		res.json(data)
+	}
+)
+
+router.get(
+	"/products",
+
+	async function (req, res) {
+		const product_name = req.query["productName"] ? req.query["productName"] : ""
+		const regexp = new RegExp(product_name)
+		const aggregation_pipeline = [
+			{$match: {"products.name": regexp}},
+			{$unwind: "$products"},
+			{$match: {"products.name": regexp}},
+			{$group: {"_id": "$products.name"}},
+			{$project: {"_id": 0, "productName": "$_id"}},
+			{$sort: {"productName": 1}},
+			{$limit: 7}
+		]
+		const data = await Receipt.aggregate(aggregation_pipeline)
+		res.json(data.map(element => element.productName))
 	}
 )
 
