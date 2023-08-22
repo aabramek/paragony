@@ -39,6 +39,7 @@ router.get(
 		aggregation_pipeline.push({$match: match_stage_filters})
 		aggregation_pipeline.push({$group: {_id: "$shop.name", "total": {$sum: 1}}})
 		aggregation_pipeline.push({$sort: {"total": -1}})
+		aggregation_pipeline.push({$limit: 5})
 
 		const data = await Receipt.aggregate(aggregation_pipeline)
 		res.json(data)

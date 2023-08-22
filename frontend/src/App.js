@@ -15,7 +15,7 @@ function App() {
     return (
         <div className="App">
             <nav>
-                <ul>
+                <ul className="navigation-list">
                     <li>
                         <NavLink to="/">Strona główna</NavLink>
                     </li>
@@ -34,7 +34,7 @@ function App() {
                         </>
                     }
                 </ul>
-                <ul>
+                <ul className="login-list">
                     {
                         auth_token ?
                         <>

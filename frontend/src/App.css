@@ -279,3 +279,117 @@ fieldset p input {
     cursor: pointer;
 }
 
+@media screen and (max-width: 1200px) {
+    nav {
+        flex-direction: column;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav ul li {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .login-list {
+        margin-top: 20px;
+    }
+
+    section {
+        width: 100%;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+@media screen and (max-width: 910px) {
+
+    .products thead {
+        display: none;
+    }
+
+    .products td {
+        display: block;
+    }
+
+    .products tbody tr {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .products tr td:nth-child(1)::after {
+        content: " Produkt";
+    }
+
+    .products tr td:nth-child(2)::after {
+        content: " Ilość";
+    }
+
+    .products tr td:nth-child(3)::after {
+        content: " Cena";
+    }
+
+    .products tr td:nth-child(4)::after {
+        content: " Zniżka";
+    }
+
+    .products tr td:nth-child(5)::after {
+        content: " Stawka VAT";
+    }
+
+    .login input {
+        width: 80%;
+    }
+
+    button {
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .buttons {
+        width: 60%;
+    }
+
+    .receipt-list-item table * {
+        border: none;
+    }
+
+    .receipt-list-item table tr {
+        border: 1px solid black;
+    }
+
+    .receipt-list-item thead {
+        display: none;
+    }
+
+    .receipt-list-item tbody td {
+        display: block;
+    }
+
+    .receipt-list-item tbody td:nth-child(1)::before {
+        content: " Produkt: ";
+    }
+
+    .receipt-list-item tbody td:nth-child(2)::before {
+        content: "Ilość: ";
+    }
+
+    .receipt-list-item tbody td:nth-child(3)::before {
+        content: "Cena: ";
+    }
+
+    .receipt-list-item tbody td:nth-child(4)::before {
+        content: "Zniżka: ";
+    }
+
+    .receipt-list-item tbody td:nth-child(5)::before {
+        content: "Stawka VAT: ";
+    }
+
+    .receipt-list-item tbody td:last-child {
+        text-align: left;
+    }
+}

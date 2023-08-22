@@ -5,7 +5,7 @@ function Product({product}) {
 			<td>{product.name}</td>
 			<td>{product.amount}</td>
 			<td>{product.price}</td>
-			<td>{product.discount}</td>
+			<td>{product.discount ? product.discount : 0}</td>
 			<td>{product.taxRate}</td>
 		</tr>
 	)

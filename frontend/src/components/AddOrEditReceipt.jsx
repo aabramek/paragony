@@ -161,7 +161,7 @@ function AddOrEditReceipt() {
 				<fieldset>
 					<legend>Lista produktów</legend>
 						{products.length === 0 ? <p>Lista jest pusta</p> : ""}
-						<table>
+						<table className="products">
 							<thead>
 								<tr>
 									<th>Produkt</th>
