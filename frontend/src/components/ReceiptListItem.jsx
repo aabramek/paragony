@@ -2,6 +2,8 @@ import Product from "./Product"
 import {Link} from "react-router-dom"
 import {FiEdit, FiTrash2} from "react-icons/fi"
 
+var Decimal = require("decimal.js-light")
+
 function ReceiptListItem({receipt, onDelete}) {
 	return (
 		<div className="receipt-list-item">
@@ -28,7 +30,7 @@ function ReceiptListItem({receipt, onDelete}) {
 				<tfoot>
 					<tr>
 						<td colSpan="4">Łączny koszt</td>
-						<td>{receipt.total.toFixed(2)}</td>
+						<td>{new Decimal(receipt.total).toFixed(2).toString()}</td>
 					</tr>
 				</tfoot>
 			</table>

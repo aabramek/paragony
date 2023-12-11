@@ -6,6 +6,8 @@ import AuthContext from "../context/AuthProvider"
 import {FiPlusCircle, FiFilePlus, FiTrash2} from "react-icons/fi"
 import {nanoid} from "nanoid"
 
+var Decimal = require("decimal.js-light")
+
 function AddOrEditReceipt() {
 	const {auth_userid, auth_token} = useContext(AuthContext)
 
@@ -81,8 +83,16 @@ function AddOrEditReceipt() {
 			},
 			date: date,
 			time: time,
-			products: products.map(product => {if (product.id) delete product.id; return product}),
-			total: products.reduce((acc, product) => acc + product.price * product.amount - product.discount, 0),
+			products: products.map(product => {
+				if (product.id) {
+					delete product.id
+				}
+				product.amount = new Decimal(product.amount ? product.amount : 0)
+				product.price = new Decimal(product.price ? product.price : 0)
+				product.discount = new Decimal(product.discount ? product.discount : 0)
+				return product
+			}),
+			total: products.reduce((acc, product) => acc.plus(product.price.times(product.amount)).minus(product.discount), new Decimal(0)).toDecimalPlaces(2).toString(),
 			user_id: auth_userid
 		}
 

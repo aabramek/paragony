@@ -1,5 +1,7 @@
 const mongoose = require("../db.js")
 
+var Decimal = require("decimal.js-light")
+
 const receiptSchema = new mongoose.Schema({
 	shop: {
 		name: {
@@ -51,21 +53,24 @@ const receiptSchema = new mongoose.Schema({
 			},
 
 			amount: {
-				type: Number,
-				min: [0.001, "Ilość produktu powinna być większa od 0.001"],
-				required: [true, "Ilość produktu jest wymagana"]
+				type: String,
+				required: [true, "Ilość produktu jest wymagana"],
+				validate: [v => /^\d+(\.\d{0,3})?$/.test(v) && new Decimal(v).greaterThanOrEqualTo("0.001"),
+					"Ilość produktu musi być liczbą większą od 0.001 podaną z dokładnością do maksymalnie 3 miejsc po kropce"]
 			},
 
 			price: {
-				type: Number,
-				min: [0.01, "Cena produktu powinna być większa od 0.01"],
-				required: [true, "Cena produktu jest wymagana"]
+				type: String,
+				required: [true, "Cena produktu jest wymagana"],
+				validate: [v => /^\d+(\.\d{0,2})?$/.test(v) && new Decimal(v).greaterThanOrEqualTo("0.01"),
+					"Cena produktu musi być liczbą większą od 0.01 podaną z dokładnością do maksymalnie 2 miejsc po kropce"]
 			},
 
 			discount: {
-				type: Number,
-				min: [0, "Zniżka na produkt nie może być ujemna"],
-				required: false
+				type: String,
+				required: false,
+				validate: [v => /^\d+(\.\d{0,2})?$/.test(v) && new Decimal(v).greaterThanOrEqualTo("0"),
+					"Zniżka ceny produktu musi być liczbą większą od 0 podaną z dokładnością do maksymalnie 2 miejsc po kropce"]
 			},
 
 			taxRate: {
@@ -79,9 +84,10 @@ const receiptSchema = new mongoose.Schema({
 	},
 
 	total: {
-		type: Number,
-		min: [0, "Łączna wartość zakupów nie może być ujemna"],
-		required: [true, "Łączna wartość zakupów jest wymagana"]
+		type: String,
+		required: [true, "Łączna wartość zakupów jest wymagana"],
+		validate: [v => /^\d+(\.\d{0,2})?$/.test(v) && new Decimal(v).greaterThanOrEqualTo("0"),
+					"Cena łączna produktów musi być liczbą większą od 0 podaną z dokładnością do maksymalnie 2 miejsc po kropce"]
 	},
 	
 	user_id: mongoose.SchemaTypes.ObjectId
