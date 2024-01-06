@@ -1,0 +1,17 @@
+[Unit]
+Description=Api dla strony z paragonami
+
+[Service]
+User=node
+Group=www-data
+ExecStartPre=rm -f socket
+ExecStart=/usr/bin/node index.js
+WorkingDirectory=/home/node/paragony-api
+Restart=no
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=paragony-api
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,3 +1,4 @@
 db_backup
 */.env
-*/*.env.*
+*.sublime-project
+*.sublime-workspace

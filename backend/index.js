@@ -1,5 +1,7 @@
 require("dotenv").config()
 
+var fs = require("fs")
+
 const express = require("express")
 const cors = require("cors")
 const app = express()
@@ -15,4 +17,6 @@ app.use("/api/receipt", receipt_controller)
 app.use("/api/user", user_controller)
 app.use("/api/statistic", statistic_controller)
 
-app.listen(process.env.PORT, function() {console.log(`Serwer działa na porcie ${process.env.PORT}`)})
+app.listen(process.env.SOCKET, function() {console.log(`Serwer działa na sockecie ${process.env.SOCKET}`)})
+
+fs.chmodSync(process.env.SOCKET, "660")
