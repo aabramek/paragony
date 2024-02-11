@@ -17,6 +17,17 @@ app.use("/api/receipt", receipt_controller)
 app.use("/api/user", user_controller)
 app.use("/api/statistic", statistic_controller)
 
-app.listen(process.env.SOCKET, function() {console.log(`Serwer działa na sockecie ${process.env.SOCKET}`)})
-
-fs.chmodSync(process.env.SOCKET, "660")
+if (process.env.SOCKET) {
+	app.listen(process.env.SOCKET, function () {
+		console.log(`Server listens on socket ${process.env.SOCKET}`)
+	})
+	fs.chmodSync(process.env.SOCKET, "660")
+}
+else if (process.env.PORT) {
+	app.listen(process.env.PORT, function () {
+		console.log(`Server listens on port ${process.env.PORT}`)
+	})
+}
+else {
+	console.log("Nor SOCKET nor PORT variables are defined")
+}

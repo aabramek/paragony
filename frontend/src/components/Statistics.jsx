@@ -48,7 +48,7 @@ function Statistics() {
             }
         }
 
-        fetch(`http://${process.env.REACT_APP_BACKEND_ADDRESS}:${process.env.REACT_APP_BACKEND_PORT}/api/statistic/${method}/?${query}`, options)
+        fetch(`http://${process.env.REACT_APP_ADDRESS}/api/statistic/${method}/?${query}`, options)
             .then(response => response.json())
             .then(json => {
                 callback(json)

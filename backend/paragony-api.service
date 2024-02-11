@@ -1,16 +1,18 @@
+# Example unit file for server
+
 [Unit]
-Description=Api dla strony z paragonami
+Description=description
 
 [Service]
-User=node
+User=user
 Group=www-data
-ExecStartPre=rm -f socket
+ExecStartPre=rm -f socket_file_name
 ExecStart=/usr/bin/node index.js
-WorkingDirectory=/home/node/paragony-api
+WorkingDirectory=workingdir
 Restart=no
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=paragony-api
+SyslogIdentifier=identifier
 
 [Install]
 WantedBy=multi-user.target
