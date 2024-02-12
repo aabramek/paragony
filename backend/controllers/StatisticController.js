@@ -8,6 +8,20 @@ const is_authorized = require("../middleware/is_authorized.js")
 
 router.use(is_authorized)
 
+function min_max_elements(arr) {
+	let min_index = 0
+	let max_index = 0
+	for (let i = 1; i < arr.length; ++i) {
+		if (arr[i] < arr[min_index]) {
+			min_index = i
+		}
+		if (arr[i] > arr[max_index]) {
+			max_index = i
+		}
+	}
+	return [arr[min_index], arr[max_index]]
+}
+
 router.get(
 	"/total_purchases",
 
@@ -113,6 +127,21 @@ router.get(
 		]
 		const data = await Receipt.aggregate(aggregation_pipeline)
 		res.json(data.map(element => element.productName))
+	}
+)
+
+router.get(
+	"/purchases_years",
+
+	async function (req, res) {
+		const id = new mongoose.Types.ObjectId(req.body.user_id)
+		const aggregation_pipeline = [
+			{$match: {"user_id": id}},
+			{$project: {"_id": 0, "year": {$substrBytes: ["$date", 0, 4]}}},
+			{$group: {"_id": "$year"}},
+		]
+		const data = await Receipt.aggregate(aggregation_pipeline)
+		res.json(min_max_elements(data.map(element => element._id)))
 	}
 )
 
