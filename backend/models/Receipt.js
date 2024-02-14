@@ -1,7 +1,5 @@
 const mongoose = require("../db.js")
 
-var Decimal = require("decimal.js-light")
-
 const receiptSchema = new mongoose.Schema({
 	shop: {
 		name: {
@@ -53,29 +51,33 @@ const receiptSchema = new mongoose.Schema({
 			},
 
 			amount: {
-				type: String,
+				type: mongoose.Decimal128,
 				required: [true, "Ilość produktu jest wymagana"],
-				validate: [v => /^\d+(\.\d{0,3})?$/.test(v) && new Decimal(v).greaterThanOrEqualTo("0.001"),
-					"Ilość produktu musi być liczbą większą od 0.001 podaną z dokładnością do maksymalnie 3 miejsc po kropce"]
+				validate: [v => v >= new mongoose.Types.Decimal128("0.001"),
+					"Ilość produktu musi być liczbą większą od  bądź równą 0.001"],
+				transform: value => value.toString()
 			},
 
 			price: {
-				type: String,
+				type: mongoose.Decimal128,
 				required: [true, "Cena produktu jest wymagana"],
-				validate: [v => /^\d+(\.\d{0,2})?$/.test(v) && new Decimal(v).greaterThanOrEqualTo("0.01"),
-					"Cena produktu musi być liczbą większą od 0.01 podaną z dokładnością do maksymalnie 2 miejsc po kropce"]
+				validate: [v => v >= new mongoose.Types.Decimal128("0.01"),
+					"Cena produktu musi być liczbą większą od bądź równą 0.01"],
+				transform: value => value.toString()
 			},
 
 			discount: {
-				type: String,
+				type: mongoose.Decimal128,
 				required: false,
-				validate: [v => /^\d+(\.\d{0,2})?$/.test(v) && new Decimal(v).greaterThanOrEqualTo("0"),
-					"Zniżka ceny produktu musi być liczbą większą od 0 podaną z dokładnością do maksymalnie 2 miejsc po kropce"]
+				validate: [v => v >= new mongoose.Types.Decimal128("0"),
+					"Zniżka ceny produktu musi być liczbą większą bądź równą 0"],
+				transform: value => value ? value.toString() : "0"
 			},
 
 			taxRate: {
 				type: String,
-				enum: {values: ["A", "B", "C", "D"], message: "Stawka podatkowa powinna być wybrana z listy: A, B, C lub D"},
+				enum: {values: ["A", "B", "C", "D"],
+				message: "Stawka podatkowa powinna być wybrana z listy: A, B, C lub D"},
 				required: [true, "Stawka podatkowa produktu jest wymagana"]
 			}
 		}],
@@ -84,10 +86,10 @@ const receiptSchema = new mongoose.Schema({
 	},
 
 	total: {
-		type: String,
+		type: mongoose.Decimal128,
 		required: [true, "Łączna wartość zakupów jest wymagana"],
-		validate: [v => /^\d+(\.\d{0,2})?$/.test(v) && new Decimal(v).greaterThanOrEqualTo("0"),
-					"Cena łączna produktów musi być liczbą większą od 0 podaną z dokładnością do maksymalnie 2 miejsc po kropce"]
+		validate: [v => v > 0, "Cena łączna produktów musi być liczbą większą od 0"],
+		transform: value => value.toString()
 	},
 	
 	user_id: mongoose.SchemaTypes.ObjectId

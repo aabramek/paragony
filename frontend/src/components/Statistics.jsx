@@ -17,6 +17,7 @@ import AuthContext from "../context/AuthProvider"
 import TotalPurchases from "./charts/TotalPurchases"
 import MoneySpent from "./charts/MoneySpent"
 import ProductPriceHistory from "./charts/ProductPriceHistory"
+import { YearRangeProvider } from "./../context/YearRangeContext"
 
 function Statistics() {
     const {auth_token} = useContext(AuthContext)
@@ -58,8 +59,10 @@ function Statistics() {
 
     return (
         <div className="statistics">
-        	<TotalPurchases  loadChartData={loadChartData} />
-            <MoneySpent loadChartData={loadChartData} />
+        	<YearRangeProvider>
+                <TotalPurchases loadChartData={loadChartData} />
+                <MoneySpent loadChartData={loadChartData} />
+            </YearRangeProvider>
             <ProductPriceHistory loadChartData={loadChartData} />
     	</div>
     )

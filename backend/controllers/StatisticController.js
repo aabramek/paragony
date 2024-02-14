@@ -26,36 +26,46 @@ router.get(
 	"/total_purchases",
 
 	async function (req, res) {
-		const id = new mongoose.Types.ObjectId(req.body.user_id)
-		const aggregation_pipeline = []
-		aggregation_pipeline.push({
-			$project: {
-				"year": {$substrBytes: ["$date", 0, 4]},
-				"month": {$substrBytes: ["$date", 5, 2]},
-				"shop.name": 1,
-				"user_id": 1
-			}
-		})
-		const match_stage_filters = {
-			user_id: id
-		}
+		const pipeline = []
+		const user_id = new mongoose.Types.ObjectId(req.body.user_id)
+
+		pipeline.push({$match: {
+			"user_id": user_id
+		}})
 		
+		pipeline.push({$project: {
+			"year": {$substrBytes: ["$date", 0, 4]},
+			"month": {$substrBytes: ["$date", 5, 2]},
+			"shop.name": true,
+			"user_id": true
+		}})
+
+		const filters = {}
+	
 		const year = req.query.year
-		if (year !== "") {
-			match_stage_filters.year = year
+		if (year) {
+			filters.year = year
 		}
 		
 		const month = req.query.month
-		if (month !== "") {
-			match_stage_filters.month = month
+		if (month) {
+			filters.month = month
 		}
-		
-		aggregation_pipeline.push({$match: match_stage_filters})
-		aggregation_pipeline.push({$group: {_id: "$shop.name", "total": {$sum: 1}}})
-		aggregation_pipeline.push({$sort: {"total": -1}})
-		aggregation_pipeline.push({$limit: 5})
 
-		const data = await Receipt.aggregate(aggregation_pipeline)
+		pipeline.push({$match: filters})
+
+		pipeline.push({$group: {
+			"_id": "$shop.name",
+			"total": {$sum: 1}
+		}})
+
+		pipeline.push({$sort: {
+			"total": -1
+		}})
+
+		pipeline.push({$limit: 5})
+
+		const data = await Receipt.aggregate(pipeline)
 		res.json(data)
 	}
 )
@@ -64,31 +74,42 @@ router.get(
 	"/money_spent",
 
 	async function (req, res) {
-		const id = new mongoose.Types.ObjectId(req.body.user_id)
-		const aggregation_pipeline = []
-		aggregation_pipeline.push({
+		const pipeline = []
+		const user_id = new mongoose.Types.ObjectId(req.body.user_id)
+		
+		pipeline.push({$match: {
+			"user_id": user_id
+		}})
+
+		pipeline.push({
 			$project: {
 				"year": {$substrBytes: ["$date", 0, 4]},
 				"month": {$toInt: {$substrBytes: ["$date", 5, 2]}},
-				"total": 1,
-				"user_id": 1
+				"total": true,
+				"user_id": true
 			}
 		})
 		
-		const match_stage_filters = {
-			user_id: id
-		}
-
+		const filters = {}
+		
 		const year = req.query.year
-		if (year !== "") {
-			match_stage_filters.year = year
+		if (year) {
+			filters.year = year
 		}
 		
-		aggregation_pipeline.push({$match: match_stage_filters})
-		aggregation_pipeline.push({$group: {"_id": "$month", "total": {$sum: "$total"}}})
-		aggregation_pipeline.push({$sort: {"_id": 1}})
+		pipeline.push({$match: filters})
+		
+		pipeline.push({$group: {
+			"_id": "$month",
+			"total": {$sum: "$total"}
+		}})
 
-		const data = await Receipt.aggregate(aggregation_pipeline)
+		pipeline.push({$project: {
+			"_id": true,
+			"total": {$toString: "$total"}
+		}})
+
+		const data = await Receipt.aggregate(pipeline)
 		res.json(data)
 	}
 )
@@ -98,14 +119,14 @@ router.get(
 
 	async function (req, res) {
 		const product_name = req.query["productName"] ? req.query["productName"] : ""
-		const aggregation_pipeline = [
+		const pipeline = [
 			{$match: {"products.name": product_name}},
 			{$unwind: "$products"},
 			{$match: {"products.name": product_name}},
 			{$project: {"_id": false, "date": true, "price": "$products.price"}},
 			{$sort: {"date": 1}}
 		]
-		const data = await Receipt.aggregate(aggregation_pipeline)
+		const data = await Receipt.aggregate(pipeline)
 		res.json(data)
 	}
 )
@@ -116,8 +137,10 @@ router.get(
 	async function (req, res) {
 		const product_name = req.query["productName"] ? req.query["productName"] : ""
 		const regexp = new RegExp(product_name)
-		const aggregation_pipeline = [
-			{$match: {"products.name": regexp}},
+		const user_id = new mongoose.Types.ObjectId(req.body.user_id)
+
+		const pipeline = [
+			{$match: {"user_id": user_id, "products.name": regexp}},
 			{$unwind: "$products"},
 			{$match: {"products.name": regexp}},
 			{$group: {"_id": "$products.name"}},
@@ -125,7 +148,8 @@ router.get(
 			{$sort: {"productName": 1}},
 			{$limit: 7}
 		]
-		const data = await Receipt.aggregate(aggregation_pipeline)
+
+		const data = await Receipt.aggregate(pipeline)
 		res.json(data.map(element => element.productName))
 	}
 )

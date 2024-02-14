@@ -9,7 +9,7 @@ function SelectYear({onChange}) {
 		<select onChange={e => onChange(e)}>
 			<option value="">Wszystkie lata</option>
 			{
-				years.map(element => <option value={element}>{element}</option>)
+				years.map(element => <option key={element} value={element}>{element}</option>)
 			}
 		</select>
 	)

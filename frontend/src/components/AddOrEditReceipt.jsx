@@ -92,7 +92,7 @@ function AddOrEditReceipt() {
 				product.discount = new Decimal(product.discount ? product.discount : 0)
 				return product
 			}),
-			total: products.reduce((acc, product) => acc.plus(product.price.times(product.amount)).minus(product.discount), new Decimal(0)).toDecimalPlaces(2).toString(),
+			total: products.reduce((acc, product) => acc.plus(product.price.times(product.amount)).minus(product.discount), new Decimal(0)).toDecimalPlaces(2),
 			user_id: auth_userid
 		}
 

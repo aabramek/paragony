@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react"
 import {FiSearch} from "react-icons/fi"
 import { Line } from "react-chartjs-2"
+import SelectYear from "./../SelectYear"
 import months from "./months_list.js"
 
 function MoneySpent({loadChartData}) {
@@ -62,17 +63,12 @@ function MoneySpent({loadChartData}) {
             "money_spent",
 
             json => {
-                const values = Array(12)
-                let j = 0
-                for (let i = 1; i <= 12; ++i) {
-                    if (j < json.length && json[j]._id === i) {
-                        values[i - 1] = json[j].total
-                        ++j
-                    }
-                    else {
-                        values[i - 1] = 0
-                    }
-                }
+                const values = Array(12).fill(0)
+                
+                json.forEach(function (element) {
+                    values[element._id - 1] = element.total
+                })
+
                 setChartData(values)
                 setChartLabels(months)
                 setChartSubtitle(year ? `Rok ${year}` : "Wszystkie lata")
@@ -97,13 +93,7 @@ function MoneySpent({loadChartData}) {
                 <form onSubmit={submitForm}>
                     <p>
                         <label for="money-spent-year">Wybierz rok</label>
-                        <select id="money-spent-year" value={year} onChange={e => {setYear(e.target.value)}}>
-                            <option value="">Wszystkie lata</option>
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                         </select>
+                        <SelectYear onChange={e => {setYear(e.target.value)}} />
                      </p>
                      <button type="button" className="btn-edit" onClick={() => setYear("")}>Resetuj ustawienia</button>
                      <button className="btn-search">Filtruj <FiSearch /></button>

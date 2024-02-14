@@ -2,6 +2,7 @@ import {useState, useEffect} from "react"
 import {FiSearch} from "react-icons/fi"
 import { Bar } from "react-chartjs-2"
 import months from "./months_list.js"
+import SelectYear from "./../SelectYear"
 
 function TotalPurchases({loadChartData}) {
     const [chartData, setChartData] = useState([])
@@ -72,13 +73,7 @@ function TotalPurchases({loadChartData}) {
             <form onSubmit={submitForm}>
                  <p>
                     <label for="total_purchases_year">Wybierz rok:</label> 
-                    <select id="total_purchases_year" value={year} onChange={e => setYear(e.target.value)}>
-                        <option value="">Wszystkie lata</option>
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                    </select>
+                    <SelectYear onChange={e => {setYear(e.target.value)}} />
                 </p>
 
                 <p>

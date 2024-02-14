@@ -90,10 +90,13 @@ router.get(
 		let limit = 10;
 		const page = parseInt(req.query.page)
 		const pageSize = parseInt(req.query.pageSize)
-		if (!isNaN(page) && !isNaN(pageSize)) {
-			skip = (page - 1) * pageSize
-			limit = pageSize
+		
+		if (isNaN(page) || isNaN(pageSize)) {
+			return res.status(400).json({message: "page and pageSize are required"})
 		}
+
+		skip = (page - 1) * pageSize
+		limit = pageSize
 
 		const docs = await Receipt.aggregate([
 			{$match: filter},
@@ -101,7 +104,8 @@ router.get(
 			{$skip: skip},
 			{$limit: limit}
 		])
-		
+		.then(docs => docs.map(pojo => new Receipt(pojo)))
+
 		res.json({receipts: docs, numberOfPages: Math.ceil(docsCount / pageSize)})
 	}
 )

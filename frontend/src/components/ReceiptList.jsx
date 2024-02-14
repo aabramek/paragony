@@ -40,7 +40,7 @@ function ReceiptList() {
 			body: JSON.stringify({receipt_id: i})
 		}
 
-		fetch(`http://${process.env.REACT_APP_BACKEND_ADDRESS}:${process.env.REACT_APP_BACKEND_PORT}/api/receipt`, options)
+		fetch(`http://${process.env.REACT_APP_ADDRESS}/api/receipt`, options)
 			.then(response => response.json())
 			.then(json => {if (json === null) console.log("z bazy nic nie usunieto")})
 			.catch(error => console.log(error))
@@ -97,7 +97,7 @@ function ReceiptList() {
 			}
 		}
 
-		fetch(`http://${process.env.REACT_APP_BACKEND_ADDRESS}:${process.env.REACT_APP_BACKEND_PORT}/api/receipt` + createQueryString(), options)
+		fetch(`http://${process.env.REACT_APP_ADDRESS}/api/receipt` + createQueryString(), options)
 			.then(response => response.json())
 			.then(json => {
 				setReceipts(json.receipts)
