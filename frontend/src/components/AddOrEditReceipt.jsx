@@ -55,13 +55,7 @@ function AddOrEditReceipt() {
 	function updateProduct(id, property, value) {
 		const p = products.map(product => {
 			if (product.id == id || product._id == id) {
-				switch (property) {
-					case "name": product.name = value; break;
-					case "amount": product.amount = value; break;
-					case "price": product.price = value; break;
-					case "discount": product.discount = value; break;
-					case "taxRate": product.taxRate = value; break; 
-				}
+				product[property] = value
 			}
 			return product
 		})
